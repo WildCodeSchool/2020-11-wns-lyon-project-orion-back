@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import {Connection} from '../connection/connection.entity';
 import {UserGenders} from './enums/user-genders.enum';
 import {Field, ObjectType} from '@nestjs/graphql';
 import {UserRoles} from './enums/user-roles.enum';
@@ -51,6 +52,14 @@ export class User {
     @Field()
     @UpdateDateColumn()
     readonly updatedAt: Date;
+
+    /* ==================================================================
+    RELATIONS
+    ===================================================================== */
+
+    @Field(() => [Connection])
+    @ManyToOne(() => Connection, connection => connection.user)
+    readonly connections: Promise<Connection[]>;
 
     constructor(item?: Partial<User>) {
         this.pid = nanoid(10);

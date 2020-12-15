@@ -1,18 +1,18 @@
-import {Query, Resolver} from '@nestjs/graphql';
-import {User} from '@modules/user/user.entity';
-import {UserService} from '@modules/user/user.service';
 import {CurrentUser} from '@commons/decorators/current-user.decorator';
-import {UseGuards} from '@nestjs/common';
 import {GqlAuthGuard} from '@commons/guards/gql-auth.guard';
+import {Query, Resolver} from '@nestjs/graphql';
+import {UserService} from './user.service';
+import {UseGuards} from '@nestjs/common';
+import {User} from './user.entity';
 
-@Resolver(_of => User)
+@Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 export class UserResolver {
 
     constructor(readonly userService: UserService) {
     }
 
-    @Query(_returns => User)
+    @Query(() => User)
     currentUser(@CurrentUser() currentUser: User): User {
         return currentUser;
     }

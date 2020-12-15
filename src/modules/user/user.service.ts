@@ -4,34 +4,25 @@ import {User} from './user.entity';
 import {Repository} from 'typeorm';
 import {CreateUserModel} from './models/create-user.model';
 import {UpdateUserModel} from './models/update-user.model';
+import {DatabaseModel} from '@commons/models/database.model';
 
 @Injectable()
-export class UserService {
+export class UserService extends DatabaseModel<User> {
 
     constructor(
         @InjectRepository(User)
         readonly repository: Repository<User>,
     ) {
-    }
-
-    async findOneById(id: number): Promise<User> {
-        return await this.repository.findOne(id);
-    }
-
-    async findOneByPid(pid: string): Promise<User> {
-        return await this.repository.findOne({pid});
-    }
-
-    async findOneByEmail(email: string): Promise<User> {
-        return await this.repository.findOne({email});
+        super(repository);
     }
 
     async create(data: CreateUserModel): Promise<User> {
-        return undefined;
+        const model = new User(data);
+        return await this.insert(model);
     }
 
     async update(id: number, data: UpdateUserModel): Promise<User> {
-        return undefined;
+        return await this.updateOneById(id, data);
     }
 
     async delete(id: number): Promise<boolean> {

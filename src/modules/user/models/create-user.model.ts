@@ -1,7 +1,7 @@
 import {UserRoles} from '../enums/user-roles.enum';
 import {UserGenders} from '../enums/user-genders.enum';
 
-export interface CreateUserModel {
+export class CreateUserModel {
     readonly email: string;
     readonly birthDate: Date;
     readonly lastName: string;

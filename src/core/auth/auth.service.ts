@@ -1,9 +1,9 @@
 import {SignOptions} from 'jsonwebtoken';
-import {AuthPayloadModel} from '@core/auth/models/auth-payload.model';
-import {AuthTokensModel} from '@core/auth/models/auth-tokens.model';
+import {User} from '../user/user.entity';
 import {Injectable, UnauthorizedException} from '@nestjs/common';
-import {UserService} from '@modules/user/user.service';
-import {User} from '@modules/user/user.entity';
+import {AuthPayloadModel} from './models/auth-payload.model';
+import {AuthTokensModel} from './models/auth-tokens.model';
+import {UserService} from '../user/user.service';
 import {ConfigService} from '@nestjs/config';
 import {JwtService} from '@nestjs/jwt';
 
@@ -29,7 +29,7 @@ export class AuthService {
     }
 
     async getUser(payload: AuthPayloadModel): Promise<User> {
-        return await this.userService.findOneById(payload.id);
+        return await this.userService.repository.findOne(payload.id);
     }
 
     private async sign(payload: AuthPayloadModel, expiresInMs: number): Promise<string> {

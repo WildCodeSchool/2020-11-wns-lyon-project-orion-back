@@ -12,9 +12,9 @@
         "baseUrl": "./",
         "incremental": true,
         "paths": {
+            "@api/*": ["src/api/*"],
             "@core/*": ["src/core/*"],
-            "@commons/*": ["src/commons/*"],
-            "@modules/*": ["src/modules/*"]
+            "@shared/*": ["src/shared/*"]
         }
     }
 }

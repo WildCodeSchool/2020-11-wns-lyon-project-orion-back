@@ -4,7 +4,7 @@ import {UpdateProfileInput} from '@api/profile/inputs/update-profile.input';
 import {BadRequestException, UseGuards} from '@nestjs/common';
 import {ProfileService} from '@api/profile/profile.service';
 import {GqlAuthGuard} from '@core/guards/gql-auth.guard';
-import {User} from '@core/user/user.entity';
+import {User} from '@api/user/user.entity';
 import {Profile} from './profile.entity';
 
 @Resolver(() => Profile)

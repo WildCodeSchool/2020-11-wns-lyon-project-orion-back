@@ -1,4 +1,4 @@
-import {User} from '@core/user/user.entity';
+import {User} from '@api/user/user.entity';
 
 export class CreateProfileModel {
     readonly username: string;

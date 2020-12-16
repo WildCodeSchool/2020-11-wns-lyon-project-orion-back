@@ -1,4 +1,4 @@
-import {UserRoles} from '../../user/enums/user-roles.enum';
+import {UserRoles} from '../../../api/user/enums/user-roles.enum';
 
 export class AuthPayloadModel {
     readonly id: number;

@@ -1,9 +1,9 @@
 import {SignOptions} from 'jsonwebtoken';
-import {User} from '../user/user.entity';
+import {User} from '../../api/user/user.entity';
 import {Injectable, UnauthorizedException} from '@nestjs/common';
 import {AuthPayloadModel} from './models/auth-payload.model';
 import {AuthTokensModel} from './models/auth-tokens.model';
-import {UserService} from '../user/user.service';
+import {UserService} from '../../api/user/user.service';
 import {ConfigService} from '@nestjs/config';
 import {JwtService} from '@nestjs/jwt';
 

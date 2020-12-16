@@ -1,5 +1,5 @@
-import {CurrentUser} from '../decorators/current-user.decorator';
-import {GqlAuthGuard} from '../guards/gql-auth.guard';
+import {CurrentUser} from '@core/decorators/current-user.decorator';
+import {GqlAuthGuard} from '@core/guards/gql-auth.guard';
 import {Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {UserService} from './user.service';
 import {UseGuards} from '@nestjs/common';

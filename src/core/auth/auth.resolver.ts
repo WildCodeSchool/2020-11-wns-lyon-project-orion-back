@@ -5,7 +5,7 @@ import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {RefreshOutput} from '@core/auth/outputs/refresh.output';
 import {LoginOutput} from '@core/auth/outputs/login.output';
 import {LoginInput} from '@core/auth/inputs/login.input';
-import {UserService} from '../user/user.service';
+import {UserService} from '../../api/user/user.service';
 import {compare} from '@shared/utils/password';
 import {ConfigService} from '@nestjs/config';
 import {AuthService} from './auth.service';

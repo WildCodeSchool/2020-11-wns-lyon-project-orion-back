@@ -2,8 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Profile {
+  id: Int!
+  username: String!
+  birthDate: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
-  id: Float!
+  id: Int!
   pid: String!
   roles: [UserRoles!]!
   lastName: String!
@@ -14,6 +28,7 @@ type User {
   birthDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
+  profile: Profile!
 }
 
 enum UserRoles {
@@ -27,11 +42,37 @@ enum UserGenders {
   Female
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type RefreshOutput {
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Int!
+}
+
+type LoginOutput {
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Int!
+  user: User!
+}
 
 type Query {
   currentUser: User!
+  users: [User!]!
+  emailExists(email: String!): Boolean!
+}
+
+type Mutation {
+  login(input: LoginInput!): LoginOutput!
+  refresh(refreshToken: String!): RefreshOutput!
+  updateProfile(input: UpdateProfileInput!): Profile!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateProfileInput {
+  username: String!
+  birthDate: DateTime!
 }

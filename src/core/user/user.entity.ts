@@ -1,14 +1,15 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne} from 'typeorm';
 import {UserGenders} from './enums/user-genders.enum';
-import {Field, ObjectType} from '@nestjs/graphql';
+import {Field, Int, ObjectType} from '@nestjs/graphql';
 import {UserRoles} from './enums/user-roles.enum';
 import {nanoid} from 'nanoid';
+import {Profile} from '@api/profile/profile.entity';
 
 @ObjectType()
 @Entity({name: 'users'})
 export class User {
 
-    @Field()
+    @Field(() => Int)
     @PrimaryGeneratedColumn()
     readonly id: number;
 
@@ -29,7 +30,7 @@ export class User {
     readonly firstName: string;
 
     @Field()
-    @Column()
+    @Column({unique: true})
     readonly email: string;
 
     @Field({nullable: true})
@@ -55,6 +56,10 @@ export class User {
     /* ==================================================================
     RELATIONS
     ===================================================================== */
+
+    @Field(() => Profile)
+    @OneToOne(() => Profile, profile => profile.user)
+    readonly profile: Promise<Profile>;
 
     constructor(item?: Partial<User>) {
         this.pid = nanoid(10);

@@ -11,7 +11,7 @@ import {ConfigService} from '@nestjs/config';
 import {AuthService} from './auth.service';
 
 @Resolver()
-export class PublicResolver {
+export class AuthResolver {
 
     constructor(
         readonly authService: AuthService,
@@ -27,10 +27,7 @@ export class PublicResolver {
     }
 
     @Mutation(() => LoginOutput)
-    async login(
-        @UserAgent() userAgent: string,
-        @RemoteAddress() remoteAddress: string,
-        @Args('input') input: LoginInput): Promise<LoginOutput> {
+    async login(@Args('input') input: LoginInput): Promise<LoginOutput> {
 
         // Vérification des inputs requis
         if (!input.email) throw new BadRequestException('Email is required');
@@ -52,7 +49,7 @@ export class PublicResolver {
         return {user, expiresIn, ...tokens};
     }
 
-    @Mutation(_returns => RefreshOutput)
+    @Mutation(() => RefreshOutput)
     async refresh(@Args('refreshToken') refreshToken: string): Promise<RefreshOutput> {
 
         // Vérification des inputs requis

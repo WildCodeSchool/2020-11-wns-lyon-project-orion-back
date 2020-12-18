@@ -4,11 +4,6 @@ import {CoreModule} from '@core/core.module';
 import {ApiModule} from '@api/api.module';
 
 @Module({
-    imports: [
-        ApiModule,
-        CoreModule,
-        ConfigModule.forRoot({isGlobal: true}),
-    ],
+    imports: [ApiModule, CoreModule, ConfigModule.forRoot({isGlobal: true})],
 })
-export class AppModule {
-}
+export class AppModule {}

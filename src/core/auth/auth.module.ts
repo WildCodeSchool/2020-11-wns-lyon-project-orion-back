@@ -6,7 +6,6 @@ import {ConfigService} from '@nestjs/config';
 import {AuthService} from './auth.service';
 import {JwtModule} from '@nestjs/jwt';
 
-
 @Module({
     imports: [
         forwardRef(() => UserModule),
@@ -17,14 +16,7 @@ import {JwtModule} from '@nestjs/jwt';
             }),
         }),
     ],
-    providers: [
-        JwtStrategy,
-        AuthService,
-        AuthResolver
-    ],
-    exports: [
-        AuthService,
-        JwtStrategy,
-    ],
+    providers: [JwtStrategy, AuthService, AuthResolver],
+    exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

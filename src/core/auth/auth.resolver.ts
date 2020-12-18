@@ -12,29 +12,29 @@ import {AuthService} from './auth.service';
 
 @Resolver()
 export class AuthResolver {
-
     constructor(
         readonly authService: AuthService,
         readonly userService: UserService,
         readonly configService: ConfigService,
-    ) {
-    }
+    ) {}
 
     @Query(() => Boolean)
     async emailExists(@Args('email') email: string): Promise<boolean> {
         if (!email) throw new BadRequestException('Email is required');
-        return !!await this.userService.repository.findOne({email});
+        return !!(await this.userService.repository.findOne({email}));
     }
 
     @Mutation(() => LoginOutput)
     async login(@Args('input') input: LoginInput): Promise<LoginOutput> {
-
         // Vérification des inputs requis
         if (!input.email) throw new BadRequestException('Email is required');
-        if (!input.password) throw new BadRequestException('Password is required');
+        if (!input.password)
+            throw new BadRequestException('Password is required');
 
         // Récupération de l'utilisateur via son email
-        const user = await this.userService.repository.findOne({email: input.email});
+        const user = await this.userService.repository.findOne({
+            email: input.email,
+        });
         if (!user) throw new BadRequestException('Invalid credentials');
 
         // Comparaison des mots de passe
@@ -50,10 +50,12 @@ export class AuthResolver {
     }
 
     @Mutation(() => RefreshOutput)
-    async refresh(@Args('refreshToken') refreshToken: string): Promise<RefreshOutput> {
-
+    async refresh(
+        @Args('refreshToken') refreshToken: string,
+    ): Promise<RefreshOutput> {
         // Vérification des inputs requis
-        if (!refreshToken) throw new BadRequestException('Refresh token is required');
+        if (!refreshToken)
+            throw new BadRequestException('Refresh token is required');
 
         // Vérification de la validité du token et récupération de l'utilisateur
         const payload = await this.authService.getPayload(refreshToken);

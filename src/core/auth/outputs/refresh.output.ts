@@ -2,7 +2,6 @@ import {Field, Int, ObjectType} from '@nestjs/graphql';
 
 @ObjectType()
 export class RefreshOutput {
-
     @Field()
     readonly accessToken: string;
 

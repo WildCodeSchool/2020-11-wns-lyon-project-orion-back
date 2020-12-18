@@ -8,7 +8,6 @@ import {User} from '../../../api/user/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
     constructor(
         private config: ConfigService,
         private authService: AuthService,

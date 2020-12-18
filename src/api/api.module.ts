@@ -3,9 +3,6 @@ import {ProfileModule} from '@api/profile/profile.module';
 import {UserModule} from '@api/user/user.module';
 
 @Module({
-    imports: [
-        UserModule,
-        ProfileModule,
-    ]
+    imports: [UserModule, ProfileModule],
 })
 export class ApiModule {}

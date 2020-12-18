@@ -7,9 +7,9 @@ import {UpdateProfileModel} from '@api/profile/models/update-profile.model';
 
 @Injectable()
 export class ProfileService {
-
-    constructor(@InjectRepository(Profile) readonly repository: Repository<Profile>) {
-    }
+    constructor(
+        @InjectRepository(Profile) readonly repository: Repository<Profile>,
+    ) {}
 
     async create(data: CreateProfileModel): Promise<Profile> {
         const model = new Profile({...data, user: Promise.resolve(data.user)});

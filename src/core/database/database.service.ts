@@ -6,9 +6,7 @@ const DEFAULT_DATABASE = 'orion';
 
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
-
-    constructor(readonly config: ConfigService) {
-    }
+    constructor(readonly config: ConfigService) {}
 
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
@@ -25,9 +23,10 @@ export class DatabaseService implements TypeOrmOptionsFactory {
             entities: ['dist/**/*.entity{.ts,.js}'],
 
             ssl: this.config.get<string>('NODE_ENV') === 'production',
-            extra: this.config.get<string>('NODE_ENV') === 'production'
-                ? {ssl: {rejectUnauthorized: false}}
-                : null,
+            extra:
+                this.config.get<string>('NODE_ENV') === 'production'
+                    ? {ssl: {rejectUnauthorized: false}}
+                    : null,
         };
     }
 }

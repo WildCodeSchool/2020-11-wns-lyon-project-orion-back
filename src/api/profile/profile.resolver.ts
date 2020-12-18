@@ -10,16 +10,17 @@ import {Profile} from './profile.entity';
 @Resolver(() => Profile)
 @UseGuards(GqlAuthGuard)
 export class ProfileResolver {
-
-    constructor(readonly profileService: ProfileService) {
-    }
+    constructor(readonly profileService: ProfileService) {}
 
     @Mutation(() => Profile)
     async updateProfile(
         @Args('input') input: UpdateProfileInput,
-        @CurrentUser() user: User): Promise<Profile> {
-        if (!input.username) throw new BadRequestException('Username is required');
-        if (!input.birthDate) throw new BadRequestException('Birth date is required');
+        @CurrentUser() user: User,
+    ): Promise<Profile> {
+        if (!input.username)
+            throw new BadRequestException('Username is required');
+        if (!input.birthDate)
+            throw new BadRequestException('Birth date is required');
 
         const profile = await user.profile;
 

@@ -4,7 +4,7 @@ import {AppModule} from './app.module';
 import {join} from 'path';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule) as NestExpressApplication;
+    const app = (await NestFactory.create(AppModule)) as NestExpressApplication;
 
     app.enableCors();
     app.useStaticAssets(join(__dirname, '../public'));

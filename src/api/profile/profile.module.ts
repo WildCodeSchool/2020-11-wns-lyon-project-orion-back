@@ -5,15 +5,8 @@ import {ProfileResolver} from '@api/profile/profile.resolver';
 import {ProfileService} from '@api/profile/profile.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Profile])
-    ],
-    providers: [
-        ProfileResolver,
-        ProfileService,
-    ],
-    exports: [
-        ProfileService,
-    ]
+    imports: [TypeOrmModule.forFeature([Profile])],
+    providers: [ProfileResolver, ProfileService],
+    exports: [ProfileService],
 })
 export class ProfileModule {}

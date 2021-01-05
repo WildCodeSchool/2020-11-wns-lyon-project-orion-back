@@ -7,6 +7,7 @@ import {User} from './user.entity';
 import {Profile} from '@api/profile/profile.entity';
 import {Post} from '@api/post/post.entity';
 import {Star} from '@api/star/star.entity';
+import {Like} from '@api/like/like.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -38,4 +39,8 @@ export class UserResolver {
         return await parent.stars;
     }
     //need likes
+    @ResolveField()
+    async likes(@Parent() parent: User): Promise<Like[]> {
+        return await parent.likes;
+    }
 }

@@ -13,6 +13,7 @@ import {UserRoles} from './enums/user-roles.enum';
 import {nanoid} from 'nanoid';
 import {Profile} from '@api/profile/profile.entity';
 import {Star} from '@api/star/star.entity';
+import {Like} from '@api/like/like.entity';
 import {Post} from '@api/post/post.entity';
 
 @ObjectType()
@@ -87,9 +88,12 @@ export class User {
     )
     readonly stars: Promise<Star[]>;
 
-    /*  @Field(() => Like)
-     @OneToMany(() => Like, like => like.user)
-     readonly like: Promise<Like>; */
+    @Field(() => [Like])
+    @OneToMany(
+        () => Like,
+        like => like.user,
+    )
+    readonly likes: Promise<Like[]>;
 
     constructor(item?: Partial<User>) {
         this.pid = nanoid(10);

@@ -8,6 +8,5 @@ export class CreateUserModel {
     readonly firstName: string;
     readonly roles: UserRoles[];
     readonly gender: UserGenders;
-
     readonly password?: string;
 }

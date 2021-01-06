@@ -16,6 +16,50 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Like {
+  id: Int!
+  createdAt: DateTime!
+  user: User!
+  post: Post!
+}
+
+type Post {
+  id: Int!
+  content: String!
+  type: PostTypes!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  author: User!
+  parent: Post
+  children: [Post!]
+  star: Star
+  likes: [Like!]
+}
+
+enum PostTypes {
+  default
+  other
+}
+
+type Star {
+  id: Int!
+  createdAt: DateTime!
+  user: User!
+  post: Post!
+type Report {
+  id: Int!
+  type: ReportTypes!
+  referenceId: Int!
+  createdAt: DateTime!
+  author: User!
+}
+
+enum ReportTypes {
+  Post
+  Profile
+}
+
 type User {
   id: Int!
   pid: String!
@@ -29,6 +73,10 @@ type User {
   createdAt: DateTime!
   updatedAt: DateTime!
   profile: Profile!
+  posts: [Post!]!
+  stars: [Star!]!
+  likes: [Like!]!
+  reports: Report!
 }
 
 enum UserRoles {
@@ -65,6 +113,11 @@ type Mutation {
   login(input: LoginInput!): LoginOutput!
   refresh(refreshToken: String!): RefreshOutput!
   updateProfile(input: UpdateProfileInput!): Profile!
+  createPost(input: CreatePostInput!): Post!
+  updatePost(input: UpdatePostInput!, id: Int!): Post!
+  deletePost(id: Int!): Boolean!
+  CreateStar(postId: Float!): Star!
+  CreateLike(postId: Float!): Like!
 }
 
 input LoginInput {
@@ -75,4 +128,13 @@ input LoginInput {
 input UpdateProfileInput {
   username: String!
   birthDate: DateTime!
+}
+
+input CreatePostInput {
+  content: String!
+  parentId: Int
+}
+
+input UpdatePostInput {
+  content: String!
 }

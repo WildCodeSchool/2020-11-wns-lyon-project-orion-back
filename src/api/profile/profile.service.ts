@@ -12,7 +12,10 @@ export class ProfileService {
     ) {}
 
     async create(data: CreateProfileModel): Promise<Profile> {
-        const model = new Profile({...data, user: Promise.resolve(data.user)});
+        const model = new Profile({
+            ...data,
+            user: Promise.resolve(data.user),
+        });
         const saved = await this.repository.save(model);
         return await this.repository.findOne(saved.id);
     }

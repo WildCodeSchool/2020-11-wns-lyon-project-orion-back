@@ -1,5 +1,12 @@
 import {CurrentUser} from '@core/decorators/current-user.decorator';
-import {Args, Mutation, Parent, ResolveField, Resolver} from '@nestjs/graphql';
+import {
+    Args,
+    Mutation,
+    Parent,
+    ResolveField,
+    Resolver,
+    Int,
+} from '@nestjs/graphql';
 import {UpdatePostInput} from '@api/post/inputs/update-post.inputs';
 import {CreatePostInput} from '@api/post/inputs/create-post.inputs';
 import {
@@ -13,7 +20,6 @@ import {GqlAuthGuard} from '@core/guards/gql-auth.guard';
 import {User} from '@api/user/user.entity';
 import {Star} from '@api/star/star.entity';
 import {Post} from './post.entity';
-import {Int} from '@nestjs/graphql';
 
 @Resolver(() => Post)
 @UseGuards(GqlAuthGuard)

@@ -1,5 +1,4 @@
 import {CurrentUser} from '@core/decorators/current-user.decorator';
-import {AllowedRoles} from '@core/decorators/allowed-roles.decorator';
 import {Resolver} from '@nestjs/graphql';
 import {Args, Mutation, Parent, ResolveField} from '@nestjs/graphql';
 import {LikeService} from '@api/like/like.service';
@@ -8,16 +7,13 @@ import {
     BadRequestException,
     UseGuards,
     NotFoundException,
-    ForbiddenException,
 } from '@nestjs/common';
 import {GqlAuthGuard} from '@core/guards/gql-auth.guard';
-import {GqlRolesGuard} from '@core/guards/gql-roles.guard';
 import {User} from '@api/user/user.entity';
 import {Like} from './like.entity';
 import {Post} from '@api/post/post.entity';
 
 @Resolver(() => Like)
-@UseGuards(GqlRolesGuard)
 @UseGuards(GqlAuthGuard)
 export class LikeResolver {
     constructor(
@@ -37,8 +33,6 @@ export class LikeResolver {
 
         return await this.likeService.create({post, user: currentUser});
     }
-
-    //async deleteBlock
 
     //resolve Field pour chaque relation  (2)
 

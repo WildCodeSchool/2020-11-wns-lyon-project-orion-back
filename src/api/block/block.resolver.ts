@@ -10,7 +10,7 @@ import {
     NotFoundException,
     UseGuards,
 } from '@nestjs/common';
-import {Parent, Mutation, ResolveField, Resolver, Args} from '@nestjs/graphql';
+import {Parent, Mutation, ResolveField, Resolver, Args, Int} from '@nestjs/graphql';
 import {Block} from './block.entity';
 import {BlockService} from './block.service';
 
@@ -21,10 +21,9 @@ export class BlockResolver {
         readonly blockService: BlockService,
         readonly userService: UserService,
     ) {}
-
     @Mutation(() => Block)
     async createBlock(
-        @Args('receiverId') receiverId: number,
+        @Args({name : 'receiverId', type: () => Int}) receiverId: number,
         @CurrentUser() currentUser: User,
     ): Promise<Block> {
         if (!receiverId)
@@ -49,7 +48,7 @@ export class BlockResolver {
 
     @Mutation(() => Boolean)
     async deleteBlock(
-        @Args('id') id: number,
+        @Args({name : 'id', type: () => Int}) id: number,
         @CurrentUser() currentUser: User,
     ): Promise<boolean> {
         if (!id) throw new BadRequestException('id is required');

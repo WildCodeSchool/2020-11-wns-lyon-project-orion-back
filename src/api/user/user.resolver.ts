@@ -5,6 +5,7 @@ import {UserService} from './user.service';
 import {UseGuards} from '@nestjs/common';
 import {User} from './user.entity';
 import {Profile} from '@api/profile/profile.entity';
+import {Report} from '@api/report/report.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -26,5 +27,10 @@ export class UserResolver {
     @ResolveField()
     async profile(@Parent() parent: User): Promise<Profile> {
         return await parent.profile;
+    }
+
+    @ResolveField()
+    async reports(@Parent() parent: User): Promise<Report> {
+        return await parent.report[];
     }
 }

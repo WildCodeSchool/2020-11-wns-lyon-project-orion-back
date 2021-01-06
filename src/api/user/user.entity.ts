@@ -8,11 +8,12 @@ import {
     OneToOne,
     OneToMany,
 } from 'typeorm';
-import {UserGenders} from './enums/user-genders.enum';
 import {Field, Int, ObjectType} from '@nestjs/graphql';
-import {UserRoles} from './enums/user-roles.enum';
-import {nanoid} from 'nanoid';
+import {UserGenders} from './enums/user-genders.enum';
 import {Profile} from '@api/profile/profile.entity';
+import {UserRoles} from './enums/user-roles.enum';
+import {Report} from '@api/report/report.entity';
+import {nanoid} from 'nanoid';
 import {fieldToFieldConfig} from 'graphql-tools';
 import {Block} from '@api/block/block.entity';
 
@@ -73,6 +74,10 @@ export class User {
         profile => profile.user,
     )
     readonly profile: Promise<Profile>;
+
+    @Field(() => [Report])
+    @OneToMany(() => Report, report => report.emitter)
+    readonly reports: Promise<Report[]>;
 
     constructor(item?: Partial<User>) {
         this.pid = nanoid(10);

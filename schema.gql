@@ -47,6 +47,17 @@ type Star {
   createdAt: DateTime!
   user: User!
   post: Post!
+type Report {
+  id: Int!
+  type: ReportTypes!
+  referenceId: Int!
+  createdAt: DateTime!
+  author: User!
+}
+
+enum ReportTypes {
+  Post
+  Profile
 }
 
 type User {
@@ -65,6 +76,7 @@ type User {
   posts: [Post!]!
   stars: [Star!]!
   likes: [Like!]!
+  reports: Report!
 }
 
 enum UserRoles {

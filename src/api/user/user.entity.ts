@@ -7,17 +7,19 @@ import {
     UpdateDateColumn,
     OneToOne,
 } from 'typeorm';
-import {UserGenders} from './enums/user-genders.enum';
-import {Field, Int, ObjectType} from '@nestjs/graphql';
-import {UserRoles} from './enums/user-roles.enum';
-import {nanoid} from 'nanoid';
-import {Profile} from '@api/profile/profile.entity';
-import {Star} from '@api/star/star.entity';
-import {Like} from '@api/like/like.entity';
-import {Post} from '@api/post/post.entity';
+import { UserGenders } from './enums/user-genders.enum';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { UserRoles } from './enums/user-roles.enum';
+import { nanoid } from 'nanoid';
+import { Profile } from '@api/profile/profile.entity';
+import { Star } from '@api/star/star.entity';
+import { Like } from '@api/like/like.entity';
+import { Post } from '@api/post/post.entity';
+import { Block } from '@api/block/block.entity';
+import { Report } from '@api/report/report.entity';
 
 @ObjectType()
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 export class User {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
@@ -28,7 +30,7 @@ export class User {
     readonly pid: string;
 
     @Field(() => [UserRoles])
-    @Column('set', {enum: UserRoles})
+    @Column('set', { enum: UserRoles })
     readonly roles: UserRoles[];
 
     @Field()
@@ -40,15 +42,15 @@ export class User {
     readonly firstName: string;
 
     @Field()
-    @Column({unique: true})
+    @Column({ unique: true })
     readonly email: string;
 
-    @Field({nullable: true})
-    @Column({nullable: true})
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     readonly password: string;
 
     @Field(() => UserGenders)
-    @Column('enum', {enum: UserGenders})
+    @Column('enum', { enum: UserGenders })
     readonly gender: UserGenders;
 
     @Field()
@@ -81,6 +83,26 @@ export class User {
     )
     readonly posts: Promise<Post[]>;
 
+
+    @Field(() => [Report])
+    @OneToMany(() => Report, report => report.emitter)
+    readonly reports: Promise<Report[]>;
+
+
+    @Field(() => [Block])
+    @OneToMany(
+        () => Block,
+        blockEmitted => blockEmitted.emitter,
+    )
+    readonly blocksEmitted: Promise<Block[]>;
+
+    @Field(() => [Block])
+    @OneToMany(
+        () => Block,
+        blockReceived => blockReceived.receiver,
+    )
+    readonly blocksReceived: Promise<Block[]>;
+
     @Field(() => [Star])
     @OneToMany(
         () => Star,
@@ -94,6 +116,9 @@ export class User {
         like => like.user,
     )
     readonly likes: Promise<Like[]>;
+
+
+
 
     constructor(item?: Partial<User>) {
         this.pid = nanoid(10);

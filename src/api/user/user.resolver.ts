@@ -4,14 +4,13 @@ import {Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {UserService} from './user.service';
 import {UseGuards} from '@nestjs/common';
 import {User} from './user.entity';
+import {Block} from '../block/block.entity';
 import {Profile} from '@api/profile/profile.entity';
 import {Report} from '@api/report/report.entity';
 
 @Resolver(() => User)
 export class UserResolver {
-
-    constructor(readonly userService: UserService) {
-    }
+    constructor(readonly userService: UserService) {}
 
     @Query(() => User)
     @UseGuards(GqlAuthGuard)
@@ -29,6 +28,16 @@ export class UserResolver {
         return await parent.profile;
     }
 
+    @ResolveField()
+    async blocksEmitted(@Parent() parent: User): Promise<Block[]> {
+        return await parent.blocksEmitted;
+    }
+
+    @ResolveField()
+    async blocksReceived(@Parent() parent: User): Promise<Block[]> {
+        return await parent.blocksReceived;
+    }
+      
     @ResolveField()
     async reports(@Parent() parent: User): Promise<Report> {
         return await parent.report[];

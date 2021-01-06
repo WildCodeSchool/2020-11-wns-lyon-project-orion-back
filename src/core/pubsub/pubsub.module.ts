@@ -3,10 +3,12 @@ import {PubSub} from 'graphql-subscriptions';
 
 @Global()
 @Module({
-    providers: [{
-        provide: 'PUB_SUB',
-        useClass: PubSub,
-    }],
+    providers: [
+        {
+            provide: 'PUB_SUB',
+            useClass: PubSub,
+        },
+    ],
     exports: ['PUB_SUB'],
 })
 export class PubsubModule {}

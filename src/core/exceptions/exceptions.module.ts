@@ -7,7 +7,7 @@ import {ExceptionsFilter} from './exceptions.filter';
         {
             provide: APP_FILTER,
             useClass: ExceptionsFilter,
-        }
-    ]
+        },
+    ],
 })
 export class ExceptionsModule {}

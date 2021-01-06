@@ -1,15 +1,25 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany} from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToOne,
+    OneToMany,
+} from 'typeorm';
 import {Field, Int, ObjectType} from '@nestjs/graphql';
 import {UserGenders} from './enums/user-genders.enum';
 import {Profile} from '@api/profile/profile.entity';
 import {UserRoles} from './enums/user-roles.enum';
 import {Report} from '@api/report/report.entity';
 import {nanoid} from 'nanoid';
+import {fieldToFieldConfig} from 'graphql-tools';
+import {Block} from '@api/block/block.entity';
 
 @ObjectType()
 @Entity({name: 'users'})
 export class User {
-
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     readonly id: number;
@@ -59,7 +69,10 @@ export class User {
     ===================================================================== */
 
     @Field(() => Profile)
-    @OneToOne(() => Profile, profile => profile.user)
+    @OneToOne(
+        () => Profile,
+        profile => profile.user,
+    )
     readonly profile: Promise<Profile>;
 
     @Field(() => [Report])
@@ -70,4 +83,18 @@ export class User {
         this.pid = nanoid(10);
         Object.assign(this, item);
     }
+
+    @Field(() => [Block])
+    @OneToMany(
+        () => Block,
+        blockEmitted => blockEmitted.emitter,
+    )
+    readonly blocksEmitted: Promise<Block[]>;
+
+    @Field(() => [Block])
+    @OneToMany(
+        () => Block,
+        blockReceived => blockReceived.receiver,
+    )
+    readonly blocksReceived: Promise<Block[]>;
 }

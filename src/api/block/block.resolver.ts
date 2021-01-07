@@ -10,9 +10,11 @@ import {
     NotFoundException,
     UseGuards,
 } from '@nestjs/common';
-import {Parent, Mutation, ResolveField, Resolver, Args, Int} from '@nestjs/graphql';
+import {Parent, Mutation, ResolveField, Resolver, Args, Int, Query} from '@nestjs/graphql';
 import {Block} from './block.entity';
 import {BlockService} from './block.service';
+import { BlocksInput } from './inputs/blocks.input';
+import { BlocksOutput } from './outputs/blocks.output';
 
 @Resolver(() => Block)
 @UseGuards(GqlAuthGuard)
@@ -61,6 +63,22 @@ export class BlockResolver {
             throw new ForbiddenException('Only emitter can unblock');
 
         return await this.blockService.delete(id);
+    }
+
+    @Query(() => BlocksOutput)
+    async blocks(
+        @Args('input') input: BlocksInput,
+        @CurrentUser() currentUser: User
+    ): Promise<BlocksOutput> {
+        if (!currentUser.roles.includes(UserRoles.Admin)){
+            if(input.emitterId) throw new ForbiddenException("Only Admin");
+            else input = {...input, emitterId: currentUser.id};
+        }
+        const items = await this.blockService.getMany(input.take, input.skip, input);
+        const total = await this.blockService.count(input);
+        const hasMore = total > input.take + input.skip;
+
+        return {items, total, hasMore};
     }
 
     @ResolveField()

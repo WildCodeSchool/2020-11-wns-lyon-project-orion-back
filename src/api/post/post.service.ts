@@ -1,10 +1,10 @@
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Post} from '@api/post/post.entity';
-import {User} from '@api/user/user.entity';
-import {Repository} from 'typeorm';
-import {CreatePostModel} from '@api/post/models/create-post.model';
-import {UpdatePostModel} from '@api/post/models/update-post.model';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from '@api/post/post.entity';
+import { User } from '@api/user/user.entity';
+import { Repository } from 'typeorm';
+import { CreatePostModel } from '@api/post/models/create-post.model';
+import { UpdatePostModel } from '@api/post/models/update-post.model';
 
 @Injectable()
 export class PostService {
@@ -23,8 +23,12 @@ export class PostService {
     }
 
     async update(id: number, data: UpdatePostModel): Promise<Post> {
-        const updated = await this.repository.save({...data, id});
+        const updated = await this.repository.save({ ...data, id });
         return await this.repository.findOne(updated.id);
+    }
+
+    async getAll(): Promise<Post[]> {
+        return await this.repository.find()
     }
 
     async delete(id: number): Promise<boolean> {

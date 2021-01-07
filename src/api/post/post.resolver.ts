@@ -1,30 +1,35 @@
-import {CurrentUser} from '@core/decorators/current-user.decorator';
+import { CurrentUser } from '@core/decorators/current-user.decorator';
 import {
     Args,
     Mutation,
+    Query,
     Parent,
     ResolveField,
     Resolver,
     Int,
 } from '@nestjs/graphql';
-import {UpdatePostInput} from '@api/post/inputs/update-post.inputs';
-import {CreatePostInput} from '@api/post/inputs/create-post.inputs';
+import { UpdatePostInput } from '@api/post/inputs/update-post.inputs';
+import { CreatePostInput } from '@api/post/inputs/create-post.inputs';
 import {
     BadRequestException,
     UseGuards,
     NotFoundException,
     ForbiddenException,
 } from '@nestjs/common';
-import {PostService} from '@api/post/post.service';
-import {GqlAuthGuard} from '@core/guards/gql-auth.guard';
-import {User} from '@api/user/user.entity';
-import {Star} from '@api/star/star.entity';
-import {Post} from './post.entity';
+import { PostService } from '@api/post/post.service';
+import { GqlAuthGuard } from '@core/guards/gql-auth.guard';
+import { User } from '@api/user/user.entity';
+import { Star } from '@api/star/star.entity';
+import { Post } from './post.entity';
 
 @Resolver(() => Post)
 @UseGuards(GqlAuthGuard)
 export class PostResolver {
-    constructor(readonly postService: PostService) {}
+    constructor(readonly postService: PostService) { }
+    @Query(() => [Post])
+    async getAllPosts() {
+        return await this.postService.getAll()
+    }
     @Mutation(() => Post)
     async createPost(
         @Args('input') input: CreatePostInput,
@@ -41,9 +46,10 @@ export class PostResolver {
         });
     }
 
+
     @Mutation(() => Post)
     async updatePost(
-        @Args({name: 'id', type: () => Int}) id: number,
+        @Args({ name: 'id', type: () => Int }) id: number,
         @Args('input') input: UpdatePostInput,
         @CurrentUser() currentUser: User,
     ): Promise<Post> {
@@ -61,7 +67,7 @@ export class PostResolver {
 
     @Mutation(() => Boolean)
     async deletePost(
-        @Args({name: 'id', type: () => Int}) id: number,
+        @Args({ name: 'id', type: () => Int }) id: number,
         @CurrentUser() currentUser: User,
     ): Promise<boolean> {
         if (!id) throw new BadRequestException('id is required');

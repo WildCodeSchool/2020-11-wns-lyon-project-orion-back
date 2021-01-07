@@ -6,7 +6,10 @@ import {BlockResolver} from './block.resolver';
 import {BlockService} from './block.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Block]), forwardRef(() => UserModule)],
+    imports: [
+        TypeOrmModule.forFeature([Block]), 
+        forwardRef(() => UserModule)
+    ],
 
     providers: [BlockResolver, BlockService],
     exports: [BlockService],

@@ -47,17 +47,32 @@ type Star {
   createdAt: DateTime!
   user: User!
   post: Post!
+}
+
+type Block {
+  id: Int!
+  createdAt: DateTime!
+  emitter: User!
+  receiver: User!
+}
+
 type Report {
   id: Int!
   type: ReportTypes!
   referenceId: Int!
   createdAt: DateTime!
-  author: User!
+  status: ReportStatus!
+  emitter: User!
 }
 
 enum ReportTypes {
   Post
   Profile
+}
+
+enum ReportStatus {
+  Pending
+  Checked
 }
 
 type User {
@@ -74,9 +89,11 @@ type User {
   updatedAt: DateTime!
   profile: Profile!
   posts: [Post!]!
+  reports: [Report!]!
+  blocksEmitted: [Block!]!
+  blocksReceived: [Block!]!
   stars: [Star!]!
   likes: [Like!]!
-  reports: Report!
 }
 
 enum UserRoles {
@@ -103,16 +120,35 @@ type LoginOutput {
   user: User!
 }
 
+type BlocksOutput {
+  items: [Block!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
 type Query {
   emailExists(email: String!): Boolean!
   currentUser: User!
   users: [User!]!
+  blocks(input: BlocksInput!): BlocksOutput!
+}
+
+input BlocksInput {
+  take: Int = 0
+  skip: Int = 0
+  receiverId: Int
+  emitterId: Int
 }
 
 type Mutation {
   login(input: LoginInput!): LoginOutput!
   refresh(refreshToken: String!): RefreshOutput!
   updateProfile(input: UpdateProfileInput!): Profile!
+  createBlock(receiverId: Int!): Block!
+  deleteBlock(id: Int!): Boolean!
+  createReport(input: CreateReportInput!): Report!
+  updateReport(input: UpdateReportInput!, id: Int!): Report!
+  deleteReport(id: Int!): Boolean!
   createPost(input: CreatePostInput!): Post!
   updatePost(input: UpdatePostInput!, id: Int!): Post!
   deletePost(id: Int!): Boolean!
@@ -128,6 +164,15 @@ input LoginInput {
 input UpdateProfileInput {
   username: String!
   birthDate: DateTime!
+}
+
+input CreateReportInput {
+  type: ReportTypes!
+  referenceId: Int!
+}
+
+input UpdateReportInput {
+  status: ReportStatus!
 }
 
 input CreatePostInput {
